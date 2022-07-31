@@ -23,7 +23,7 @@ The [set-creds.sh](./set-creds.sh) script must be run as `. ./set-creds.sh` in o
 Absolutely no warranty provided, this worked fine on my Mac this evening (macOS 12.5, homebrew up-to-date etc.) so any issues, please scratch your noggin and figure it out 🖖
 
 ### Refinement
-You'll absolutely want to delve into the finer detail, such as using the `aws:PrincipalTag/x509Subject/[CN|OU|O]` condition! 
+You'll absolutely want to [delve into the finer detail](https://docs.aws.amazon.com/rolesanywhere/latest/userguide/trust-model.html#trust-policy "AWS IAM Roles Anywhere Trust Model docs"), such as using the `aws:PrincipalTag/x509Subject/[CN|OU|O]` condition! Tweak [create.sh](./create.sh) to bring in an edited (for your `CN`/`OU`, or whatever you wish to explore) version of [rolesanywhere-role-trust-with-condition.json](./rolesanywhere-role-trust-with-condition.json).
 
 To determine the unique details of the principal, using a CloudTrail event for the `rolesanywhere:CreateSession` API call as an example, if that the JSON for that API call is in a file called `createsession.json`, the Accedd Key Id and Username can be extracted with `jq`:
 
