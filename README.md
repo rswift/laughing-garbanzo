@@ -8,7 +8,7 @@ Cobbled this together from a few sources:
 * https://docs.aws.amazon.com/rolesanywhere/latest/userguide/credential-helper.html
 
 ### Usage
-The [create.sh](./create.sh) script endeavours to create the root & intermediate certificate authorities, then create and sign (with the intermediate) a user cert... With those artefacts, it relies on you having appropraite AWS permissions to create the Trust Anchor, a Role (using the AWS read only policy) and a Profile.
+The [create.sh](./create.sh) script endeavours to create the root & intermediate certificate authorities, then create and sign (with the intermediate) a user cert... With those artefacts, it relies on you having appropriate AWS permissions to create the Trust Anchor, a Role (using the AWS read only policy) and a Profile.
 
 The [set-creds.sh](./set-creds.sh) script must be run as `. ./set-creds.sh` in order to set the AWS environment variables. Otherwise, they'll set themselves inside the script, then be lost when the script ends. If it works, then you'll have the permission scope of the role that is linked to the profile, authenticated via the certs. Magic.
 
@@ -25,7 +25,7 @@ Absolutely no warranty provided, this worked fine on my Mac this evening (macOS 
 ### Refinement
 You'll absolutely want to [delve into the finer detail](https://docs.aws.amazon.com/rolesanywhere/latest/userguide/trust-model.html#trust-policy "AWS IAM Roles Anywhere Trust Model docs"), such as using the `aws:PrincipalTag/x509Subject/[CN|OU|O]` condition! Tweak [create.sh](./create.sh) to bring in an edited (for your `CN`/`OU`, or whatever you wish to explore) version of [rolesanywhere-role-trust-with-condition.json](./rolesanywhere-role-trust-with-condition.json).
 
-To determine the unique details of the principal, using a CloudTrail event for the `rolesanywhere:CreateSession` API call as an example, if that the JSON for that API call is in a file called `createsession.json`, the Accedd Key Id and Username can be extracted with `jq`:
+To determine the unique details of the principal, using a CloudTrail event for the `rolesanywhere:CreateSession` API call as an example, if that the JSON for that API call is in a file called `createsession.json`, the Access Key Id and Username can be extracted with `jq`:
 
 ```sh
 $ export IAM_ROLES_ANYWHERE_SUBJECT_USERNAME=$(cat createsession.json | jq -r '.responseElements.credentialSet[].assumedRoleUser.arn' | cut -d\/ -f3)
